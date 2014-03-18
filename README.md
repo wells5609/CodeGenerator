@@ -6,7 +6,6 @@ Generate PHP code programattically.
 ##Example Usage
 
 ####Generating a class
-
 ```php
 // create a class generator
 $generator = new \CodeGenerator\ClassGenerator();
@@ -36,7 +35,7 @@ $gen->addMethod('getSomething', array('var'));
 $gen->addMethod('setSomething', array('var', 'value'));
 ```
 
-Using the above, a call to `$generator->generate($gen)` will produce output the following:
+Using the above, a call to `$generator->generate($gen)` will produce the following output:
 
 ```php
 <?php
