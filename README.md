@@ -8,33 +8,32 @@ Generate PHP code programattically.
 ####Generating a class
 
 ```php
-	
-	// create a class generator
-	$generator = new \CodeGenerator\ClassGenerator();
-	
-	// set the classname
-	$gen = $generator->create('MyController');
-	
-	$gen->setNamespace('App\Resources');
-	
-	$gen->setParent('App\Resources\Controller');
-	
-	// Add 'use' statements
-	$gen->addUse('Countable')
-		->addUse('ArrayAccess')
-		->addUse('Serializable');
-	
-	// Add interfaces - will append methods
-	$gen->addInterface('ArrayAccess')
-		->addInterface('Countable')
-		->addInterface('Serializable');
-	
-	$gen->addProperty('instance', 'string', 'protected static');
-	
-	$gen->addPredefinedMethod('CodeGenerator\Method\StaticInstance');
-	
-	$gen->addMethod('getSomething', array('var'));
-	$gen->addMethod('setSomething', array('var', 'value'));
+// create a class generator
+$generator = new \CodeGenerator\ClassGenerator();
+
+// set the classname
+$gen = $generator->create('MyController');
+
+$gen->setNamespace('App\Resources');
+
+$gen->setParent('App\Resources\Controller');
+
+// Add 'use' statements
+$gen->addUse('Countable')
+	->addUse('ArrayAccess')
+	->addUse('Serializable');
+
+// Add interfaces - will append methods
+$gen->addInterface('ArrayAccess')
+	->addInterface('Countable')
+	->addInterface('Serializable');
+
+$gen->addProperty('instance', 'string', 'protected static');
+
+$gen->addPredefinedMethod('CodeGenerator\Method\StaticInstance');
+
+$gen->addMethod('getSomething', array('var'));
+$gen->addMethod('setSomething', array('var', 'value'));
 ```
 
 Using the above, a call to `$generator->generate($gen)` will produce output the following:
