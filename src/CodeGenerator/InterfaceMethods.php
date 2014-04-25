@@ -21,9 +21,23 @@ class InterfaceMethods {
 			'rewind' => array(),
 			'valid' => array(),
 		),
+		'IteratorAggregate' => array(
+			'getIterator' => array(),
+		),
 		'Serializable' => array(
 			'serialize' => array(),
-			'unserialize' => array('serialized'),
+			'unserialize' => array('string:serialized'),
+		),
+		'JsonSerializable' => array(
+			'jsonSerialize' => array(),
+		),
+		'SplObserver' => array(
+			'update' => array('SplSubject:subject'),
+		),
+		'SplSubject' => array(
+			'notify' => array(),
+			'attach' => array('SplObserver:observer'),
+			'detatch' => array('SplObserver:observer'),
 		),
 	);
 	

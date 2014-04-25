@@ -27,7 +27,17 @@ abstract class AbstractPredefined {
 		$str .= "\t$this->scope function $this->name" . '(';
 		
 		if (! empty($this->parameters)) {
-			$str .= '$'.implode(', $', $this->parameters);
+			
+			foreach($this->parameters as $name => $type) {
+				
+				if (\CodeGenerator\Generator::isPrintableType($type)) {
+					$str .= $type . ' ';
+				}
+				
+				$str .= '$'.$name.', ';
+			}
+			
+			$str = rtrim($str, ' ,');
 		}
 		
 		$str .= ') {';
@@ -47,8 +57,8 @@ abstract class AbstractPredefined {
 		}
 		
 		if (! empty($this->parameters)) {
-			foreach($this->parameters as $param) {
-				$s .= "\n\t * @param $param ";
+			foreach($this->parameters as $name => $type) {
+				$s .= "\n\t * @param $type $name ";
 			}
 		}
 		
