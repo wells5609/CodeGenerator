@@ -3,126 +3,87 @@ CodeGenerator
 
 Generate PHP code using PHP.
 
+Currently, the library only allows you to generate code for classes.
+
 ##Example
 
 ```php
-// create a class generator
-$generator = new \CodeGenerator\ClassGenerator();
+use CodeGen\Canvas;
+use CodeGen\Php\Class_ as PhpClass;
+use CodeGen\Php\Property;
+use CodeGen\Php\Method;
+use CodeGen\Php\Parameter;
 
-// set the classname
-$gen = $generator->create('MyController');
+// Create a canvas
+$canvas = new Canvas();
 
-$gen->setNamespace('App\Resources');
+// Set the namespace and add uses
+$canvas->setNamespace('App\Controller')
+	->use('Serializable');
 
-$gen->setParent('App\Resources\Controller');
+// Create the class object
+$class = new PhpClass($canvas);
+$class->setName('MyController')
+	->extends('App\Controller\BaseController')
+	->implements('Serializable');
 
-// Add 'use' statements
-$gen->addUse('Countable')
-	->addUse('ArrayAccess')
-	->addUse('Serializable');
+// Add some properties
+$class->addProperty(
+	(new Property($canvas, 'action'))
+		->setVisibility('protected')
+);
 
-// Add interfaces - will append methods
-$gen->addInterface('ArrayAccess')
-	->addInterface('Countable')
-	->addInterface('Serializable');
+$class->addProperty(
+	(new Property($canvas))
+		->setName('defaultAction')
+		->setVisibility('private')
+		->setDefault('index')
+);
 
-$gen->addProperty('instance', 'string', 'protected static');
+// Create a method
+$constructor = new Method($canvas, '__construct');
+$constructor->addParam(
+	(new Parameter($canvas))
+		->setName('something')
+		->setType('Countable')
+);
+// Attach the method to the class
+$class->addMethod($constructor);
 
-$gen->addPredefinedMethod('CodeGenerator\Method\StaticInstance');
-
-$gen->addMethod('getSomething', array('var'));
-$gen->addMethod('setSomething', array('var', 'value'));
+// Add the class object to the canvas
+$canvas->addObject($class);
 ```
 
-Using the above, a call to `$generator->generate($gen)` will produce the following output:
-
+Now we simply cast the canvas to a string:
 ```php
-<?php
+print $canvas; 
+```
+Which will print the following:
+```php
+namespace App\Controller; 
 
-namespace App\Resources;
-
-use Countable;
-use ArrayAccess;
 use Serializable;
 
-class MyController extends Controller implements ArrayAccess, Countable, Serializable {
-
-	/**
-	 * @var string
-	 */
-	protected static $instance;
+class MyController extends BaseController implements Serializable
+{
 
 	/** 
-	 * Returns singleton instance.
-	 * @return $this
+	 * @var mixed
 	 */
-	public static function instance() {
-		if (! isset(self::$instance))
-			self::$instance = new self();
-		return self::$instance;
-	}
+	protected $action;
 
-	/**
-	 * @param $var 
-	 * @return 
+	/** 
+	 * @var string
 	 */
-	public function getSomething($var) {
-	}
+	private $defaultAction = "index";
 
-	/**
-	 * @param $var 
-	 * @param $value 
-	 * @return 
-	 */
-	public function setSomething($var, $value) {
-	}
-
-	/**
-	 * @param $index 
-	 * @param $newval 
-	 * @return 
-	 */
-	public function offsetSet($index, $newval) {
-	}
-
-	/**
-	 * @param $index 
-	 * @return 
-	 */
-	public function offsetGet($index) {
-	}
-
-	/**
-	 * @param $index 
-	 * @return 
-	 */
-	public function offsetUnset($index) {
-	}
-
-	/**
-	 * @param $index 
-	 * @return 
-	 */
-	public function offsetExists($index) {
-	}
-
-	/**
-	 * @return 
-	 */
-	public function count() {
-	}
-
-	/**
-	 * @return 
-	 */
 	public function serialize() {
 	}
 
-	/**
-	 * @param $serialized 
-	 * @return 
-	 */
 	public function unserialize($serialized) {
+	}
+
+	public function __construct(\Countable $something) {
 	}
 
 }
