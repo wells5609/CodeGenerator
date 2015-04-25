@@ -1,11 +1,10 @@
 CodeGenerator
 =============
 
-Generate PHP code programattically.
+Generate PHP code using PHP.
 
-##Example Usage
+##Example
 
-####Generating a class
 ```php
 // create a class generator
 $generator = new \CodeGenerator\ClassGenerator();
