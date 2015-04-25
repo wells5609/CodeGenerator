@@ -1,0 +1,23 @@
+{
+	"name": "wells5609/codegenerator",
+	"type": "library",
+	"description": "Generate PHP code using PHP",
+	"keywords": ["Code", "Generator"],
+	"homepage": "https://github.com/wells5609/codegenerator",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Wells",
+			"email": "wellspeterson@live.com"
+		}
+	],
+	"require": {
+		"php": ">=5.4"
+	},
+	"autoload": {
+		"psr-4": {
+			"CodeGen\\": "src/"
+		}
+	},
+	"minimum-stability": "dev"
+}
