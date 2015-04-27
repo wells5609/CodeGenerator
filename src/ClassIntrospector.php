@@ -4,7 +4,7 @@ namespace CodeGen;
 
 use ReflectionClass;
 use ReflectionMethod;
-use CodeGen\Php\Class_ as PhpClass;
+use CodeGen\Php\ClassDefinition;
 use CodeGen\Php\Method;
 use CodeGen\Php\Parameter;
 
@@ -21,7 +21,7 @@ class ClassIntrospector
 	 */
 	protected $ref;
 	
-	public static function addMethodsToClass(PhpClass $object, $classname) {
+	public static function addMethodsToClass(ClassDefinition $object, $classname) {
 		
 		$introspector = new static($object->getCanvas(), $classname);
 		
@@ -49,7 +49,7 @@ class ClassIntrospector
 			
 			$gen = new Method($this->canvas, $method->name);
 			
-			$gen->setVisibility($this->getMethodVisibility($method));
+			$gen->setVisibility($this->resolveMethodVisibility($method));
 			
 			if ($method->isStatic()) {
 				$gen->setStatic();
@@ -79,8 +79,12 @@ class ClassIntrospector
 				$parameter->setType($class->name);
 			}
 			
-			if ($param->isDefaultValueAvailable()) {
-				$parameter->setDefault($param->getDefaultValue());
+			if ($param->isOptional()) {
+				if ($param->isDefaultValueAvailable()) {
+					$parameter->setDefault($param->getDefaultValue());
+				} else {
+					$parameter->setDefault('null');
+				}
 			}
 			
 			$gen->addParam($parameter);
@@ -89,7 +93,7 @@ class ClassIntrospector
 		return $gen;
 	}
 	
-	protected function getMethodVisibility(ReflectionMethod $method) {
+	protected function resolveMethodVisibility(ReflectionMethod $method) {
 		if ($method->isPublic()) {
 			return 'public';
 		} else if ($method->isProtected()) {

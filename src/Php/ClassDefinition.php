@@ -7,7 +7,7 @@ use CodeGen\Functionality\Abstractable;
 use CodeGen\Functionality\Finalable;
 use CodeGen\ClassIntrospector;
 
-class Class_ extends AbstractObject
+class ClassDefinition extends AbstractObject
 {
 	use Abstractable, Finalable;
 	
